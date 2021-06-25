@@ -18,10 +18,31 @@ namespace Shop_15.Controllers
             _db = db;
         }
 
+        //GET
         public IActionResult Index()
         {
             IEnumerable<Products> productsList = _db.Products.Include(x => x.Category);
             return View(productsList);
+        }
+
+        // GET
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Products products)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Products.Add(products);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(products);
         }
     }
 }
