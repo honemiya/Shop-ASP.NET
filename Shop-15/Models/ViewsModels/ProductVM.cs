@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shop_15.Models.ViewsModels
+namespace Shop_15.Models.ViewModels
 {
     public class ProductVM
     {
-        public Products Product { get; set; }
+        public Product Product { get; set; }
         public IEnumerable<SelectListItem> CategorySelectList { get; set; }
     }
 }

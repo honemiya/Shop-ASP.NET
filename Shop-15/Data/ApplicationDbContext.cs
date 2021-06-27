@@ -12,11 +12,9 @@ namespace Shop_15.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
-
-
         }
 
         public DbSet<Category> Category { get; set; }
-        public DbSet<Products> Products { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }

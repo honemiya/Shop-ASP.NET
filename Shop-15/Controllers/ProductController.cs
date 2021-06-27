@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shop_15.Data;
 using Shop_15.Models;
+using Shop_15.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,31 +20,51 @@ namespace Shop_15.Controllers
             _db = db;
         }
 
-        //GET
         public IActionResult Index()
         {
-            IEnumerable<Products> productsList = _db.Products.Include(x => x.Category);
-            return View(productsList);
+            IEnumerable<Product> productList = _db.Product.Include(u => u.Category);
+            return View(productList);
         }
 
-        // GET
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
-            return View();
+            ProductVM productVM = new ProductVM()
+            {
+                Product = new Product(),
+                CategorySelectList = _db.Category.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+            };
+
+            if (id == null)
+            {
+                return View(productVM);
+            }
+            else
+            {
+                productVM.Product = _db.Product.Find(id);
+                if (productVM.Product == null)
+                {
+                    return NotFound();
+                }
+
+                return View(productVM);
+            }
         }
 
-        // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Products products)
+        public IActionResult Upsert(Product product)
         {
             if (ModelState.IsValid)
             {
-                _db.Products.Add(products);
+                _db.Product.Add(product);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(products);
+            return View(product);
         }
     }
 }
