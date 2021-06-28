@@ -14,6 +14,7 @@ namespace Shop_15.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private bool Valid;
 
         public ProductController(ApplicationDbContext db)
         {
@@ -40,10 +41,12 @@ namespace Shop_15.Controllers
 
             if (id == null)
             {
+                Valid = true;
                 return View(productVM);
             }
             else
             {
+                Valid = false;
                 productVM.Product = _db.Product.Find(id);
                 if (productVM.Product == null)
                 {
@@ -60,9 +63,19 @@ namespace Shop_15.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Product.Add(product);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Valid == false)
+                {
+                    _db.Product.Update(product);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+
+                    _db.Product.Add(product);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             return View(product);
         }
@@ -102,36 +115,5 @@ namespace Shop_15.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        //// GET
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var category = _db.Category.Find(id);
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(category);
-        //}
-
-        //// POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Edit(Category category)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _db.Category.Update(category);
-        //        _db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(category);
-        //}
     }
 }
