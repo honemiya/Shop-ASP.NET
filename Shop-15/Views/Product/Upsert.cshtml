@@ -46,7 +46,7 @@
                         <label asp-for="Product.Description"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Product.Description" class="form-control" />
+                        <textarea id="summernote" asp-for="Product.Description" class="form-control"></textarea>
                         <span class="text-danger" asp-validation-for="Product.Description"></span>
                     </div>
                 </div>
@@ -87,7 +87,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4"></div>
+            <div class="col-4">
+                @if(Model.Product.Id != 0)
+            {
+                <img src="@ENW.ImagePath@Model.Product.Image" alt="@ENW.ImagePath@Model.Product.Image" width="100%"/>
+            }
+            </div>
         </div>
     </div>
 
@@ -97,4 +102,10 @@
     @{
 <partial name="_ValidationScriptsPartial" />
     }
+<script>
+      $('#summernote').summernote({
+        tabsize: 2,
+        height: 300
+      });
+</script>
 }
