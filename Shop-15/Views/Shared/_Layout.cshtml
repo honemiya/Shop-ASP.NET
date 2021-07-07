@@ -26,12 +26,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
-                        </li>
+                        @if (User.IsInRole(ENW.AdminRole))
+                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+                            </li>
+                         }
                         <li>
                             @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(ENW.SessionCart) != null)
                             {
@@ -50,6 +53,10 @@
                         <li>
                             <partial name="_LoginPartial" />
                         </li>
+                        @if (User.IsInRole(ENW.AdminRole))
+                        {
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Create new admin</a>
+                        }
                     </ul>
                 </div>
             </div>
