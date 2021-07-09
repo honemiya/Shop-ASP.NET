@@ -7,7 +7,12 @@ namespace Shop_15.Models.ViewsModels
 {
     public class CartVM
     {
-        public IEnumerable<Product> Products { get; set; }
-        public IEnumerable<Category> Categories { get; set; }
+        public CartVM()
+        {
+            ProductList = new List<Product>();
+        }
+        
+        public AppUser AppUser { get; set; }
+        public IList<Product> ProductList { get; set; }
     }
 }

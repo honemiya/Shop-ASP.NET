@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop_15.Data;
@@ -8,10 +9,12 @@ using Shop_15.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Shop_15.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -72,6 +75,30 @@ namespace Shop_15.Controllers
             HttpContext.Session.Set(ENW.SessionCart, shoppingCartsList);
 
             return RedirectToAction("Index");
+        }
+
+        // GET
+        public IActionResult Order()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var clime = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            List<ShoppingCart> shoppingCartsList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(ENW.SessionCart) != null && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(ENW.SessionCart).Count() > 0)
+            {
+                shoppingCartsList = HttpContext.Session.Get<List<ShoppingCart>>(ENW.SessionCart);
+            }
+
+            List<int> productInCart = shoppingCartsList.Select(x => x.ProductId).ToList();
+            IEnumerable<Product> productList = _db.Product.Where(x => productInCart.Contains(x.Id));
+
+            CartVM cartVM = new CartVM()
+            {
+                AppUser = _db.AppUser.FirstOrDefault(i => i.Id == clime.Value),
+                ProductList = productList.ToList()
+            };
+
+            return View(cartVM);
         }
     }
 }
