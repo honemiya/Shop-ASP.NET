@@ -9,7 +9,8 @@ namespace Shop_15
     {
         public const string ImagePath = @"\images\products\";
         public const string SessionCart = "ShopingCartSession";
-        public static string AdminRole = "Admin";
-        public static string CustomerRole = "Customer";
+        public const string AdminRole = "Admin";
+        public const string CustomerRole = "Customer";
+        public const string AdminEmail = "zalubovskijv94@gmail.com";
     }
 }
