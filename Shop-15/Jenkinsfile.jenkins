@@ -15,7 +15,7 @@ pipeline  {
             steps {
                 echo 'Creating docker image ...'
                 dir('.'){
-                    sh "docker build -t hennessyzazz/shopTest Shop-15/. "
+                    sh "docker build -t hennessyzazz/shop-test Shop-15/. "
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline  {
             steps {
                 echo " ============== pushing image =================="
                 sh '''
-                docker push hennessyzazz/shopTest:latest
+                docker push hennessyzazz/shop-test:latest
                 '''
             }
         }
@@ -65,7 +65,7 @@ pipeline  {
             steps {
                 echo " ============== starting chatterbox server =================="
                 sh '''
-                docker run -d --restart=always -p 80:80  hennessyzazz/shopTest
+                docker run -d --restart=always -p 80:80  hennessyzazz/shop-test
                 '''
             }
         }
