@@ -36,21 +36,6 @@
                             </li>
                          }
                         <li>
-                            @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(ENW.SessionCart) != null)
-                            {
-                                <a class="nav-link" asp-action="Index" asp-controller="Cart">
-                                    @{
-                                        var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(ENW.SessionCart).Count();
-                                    }
-                                    Cart &nbsp; (@count)
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="#" class="nav-link"> Cart &nbsp;(0)</a>
-                            }
-                        </li>
-                        <li>
                             <partial name="_LoginPartial" />
                         </li>
                         @if (User.IsInRole(ENW.AdminRole))
